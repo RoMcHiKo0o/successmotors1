@@ -1,0 +1,86 @@
+.wrapper {
+    position: absolute;
+    width: 494px;
+    background-image: url("salesforce2.png");
+    height: 481px;
+    background-repeat: no-repeat;
+}
+h2, p {
+    text-align: center;
+}
+
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    width: 300px;
+    margin-left: 100px;
+    margin-top: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+form > * {
+    margin: 5px 0;
+    width: 90%;
+}
+
+.names {
+    display: flex;
+    width: 277px;
+    gap: 4px;
+    position: relative;
+    flex-direction: row;
+
+}
+
+#first_name, #last_name {
+    width: 100%;
+
+}
+input, select {
+    outline: #00A1E0;
+    border: 2px solid #00A1E0;
+    border-radius: 5px;
+    
+}
+.names > input {
+    width: 100%;
+}
+
+select {
+    width: 92%;
+}
+
+label {
+    margin: 0;
+}
+
+#submit {
+    margin-top: 0;
+    
+    width: 28%;
+    background-color: white;
+    text-decoration-color: #00A1E0;
+}
+
+#message {
+    margin-bottom: 10px;
+    color: red;
+    border-color: none !important;
+}
+
+
+.g-recaptcha {
+    position: relative;
+    width: 100%;
+    background: #f9f9f9;
+    overflow: hidden;
+    margin-left: 25px;
+    transform:scale(0.91);
+    transform-origin:0 0;
+}

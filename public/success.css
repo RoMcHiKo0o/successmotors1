@@ -1,0 +1,22 @@
+.wrapper {
+    position: relative;
+    width: 494px;
+    background-image: url("salesforce2.png");
+    height: 481px;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+body {
+    font-family:cursive;
+    display: flex;
+    justify-content: center;
+}
+
+
+h2 {
+    position: absolute;
+    z-index: 2;
+    margin-top: 240px;
+    color: white;
+}

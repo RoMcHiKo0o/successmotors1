@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+  <html>
+<head>
+    <link rel="stylesheet" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8"/>
+</head>
+<script src="main.js"></script>
+
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+<script>
+  function timestamp() { var response = document.getElementById("g-recaptcha-response"); if (response == null || response.value.trim() == "") {var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);elems["ts"] = JSON.stringify(new Date().getTime());document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems); } } setInterval(timestamp, 500); 
+</script>
+
+  
+  <body>
+  <div class="wrapper">
+    
+  <form name='webtolead' action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST" onsubmit="return validateForm()">
+    <input type="hidden" name='captcha_settings' value='{"keyname":"succleadpair","fallback":"true","orgId":"00DDo000001AZcY","ts":""}'/>
+    <input type="hidden" name="oid" value="00DDo000001AZcY"/>
+    <input type="hidden" name="retURL" value="https://google.com"/>
+
+    
+    <input id="company" name="company" type="text" placeholder="Company"/>
+    <div class="names">
+      <input id="first_name"  name="first_name" type="text" placeholder="First Name"/>
+    
+    <input id="last_name" name="last_name" type="text" placeholder="Last Name"/>
+    </div>
+    
+    
+    <input id="email" name="email" type="email" placeholder="Email"/>
+    
+    <input id="phone" name="phone" type="text" placeholder="Phone"/>
+    
+    <label>Product:</label>
+    <select id="00NDo000006GlK4" name="00NDo000006GlK4">
+        <option value="HK007A1">Carpets Hyundai</option>
+        <option value="HK008A2">Carpets Kia</option>
+        <option value="L005A1">Carpets Lada</option>
+        <option value="R008A1">Carpets Renault</option>
+        <option value="VAG010A2">Carpets Skoda</option>
+        <option value="VAG009A1">Carpets Volkswagen</option>
+        <option value="VAG007E4">CFNA</option>
+        <option value="VAG008E5">CFNB</option>
+        <option value="VAG005E2">CFW</option>
+        <option value="VAG006E3">CWVA</option>
+        <option value="VAG004E1">CZCA</option>
+        <option value="HK006E2">G4FG</option>
+        <option value="HK005E1">G4LC</option>
+        <option value="R007E3">H4M</option>
+        <option value="HK003C3">Hyundai Accent</option>
+        <option value="HK004C4">Hyundai Solaris</option>
+        <option value="R006E2">K4M</option>
+        <option value="R005E1">K7M</option>
+        <option value="HK001C1">Kia Rio</option>
+        <option value="HK002C2">Kia Rio X-Line</option>
+        <option value="L001C1">Lada Vesta</option>
+        <option value="L002C2">Lada Xray</option>
+        <option value="MI001A1">Phone holder Xiaomi</option>
+        <option value="R001C1">Renault Logan</option>
+        <option value="R002C2">Renault Logan Stepway</option>
+        <option value="R003C3">Renault Sandero</option>
+        <option value="R004C4">Renault Sandero Stepway</option>
+        <option value="VAG003C3">Skoda Rapid</option>
+        <option value="L004E2">VAZ-21129</option>
+        <option value="L003E1">VAZ-21179</option>
+        <option value="VAG002C2">Volkswagen Polo 2021</option>
+        <option value="VAG001C1Y">Volkswagen Polo Sedan</option>
+    </select>    
+    <div class="g-recaptcha" data-sitekey="6Lc95cQlAAAAAOB7I6pt9rAncTzkIGJ3P9kNL-Bb"></div>
+    
+    <input type="submit" name="submit" id="submit"/>
+    <p id="message"></p>
+
+  </form>
+    
+</div>
+</body>
+</html>
