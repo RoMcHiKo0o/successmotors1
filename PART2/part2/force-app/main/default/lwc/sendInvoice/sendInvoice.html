@@ -1,0 +1,54 @@
+<!-- sldsValidatorIgnore -->
+<template>
+        <lightning-quick-action-panel header="Invoice Email">
+            <div class="slds-col">
+                <div class="slds-form-element slds-border_bottom">
+                    <span class="slds-form-element__label">Recipient Name</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">
+                        <p>{contact.name}</p>
+                      </div>
+                    </div>
+                </div>
+                <div class="slds-form-element slds-border_bottom">
+                    <span class="slds-form-element__label">Recipient Name</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">
+                        <lightning-formatted-email class="slds-m-around-large" value={contact.email}></lightning-formatted-email>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div>
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="form-element-01">Subject</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-form-element__static">{subject}</div>
+                    </div>
+                </div>
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="form-element-02">Body</label>
+                    <div class="slds-form-element__control form-element-02">
+                    <lightning-input-rich-text value={HtmlValue} onchange={handleChange} formats="[]"></lightning-input-rich-text>
+                    </div>
+                </div>
+
+            </div>
+            <div slot="footer">
+                <lightning-button
+                    variant="neutral"
+                    label="Show invoice"
+                    onclick={showHandle}
+                ></lightning-button>
+                <lightning-button
+                    variant="brand"
+                    label="Send"
+                    class="slds-m-left_x-small"
+                    onclick={sendHandle}
+                ></lightning-button>
+            </div>
+        </lightning-quick-action-panel>
+</template>

@@ -1,0 +1,309 @@
+<apex:page controller="PDFController" renderAs="PDF" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    <html>
+        
+    
+    <head>
+        
+    
+    <style type="text/css" media="print">
+        
+        @page {
+        	overflow:hidden;
+        	@bottom-center {
+        		content: element(footer);
+        		border-bottom: 2cm solid white;
+        	}
+            @top-center {
+        		content: element(headerInfo);
+        		border-top: 1.5cm solid white;
+        		
+            }
+        	size: 210mm 297mm;
+            margin-top: 9cm;
+            margin-left: 0cm;
+            margin-right: 0cm;
+            margin-bottom: 3cm;
+        }
+        .footer {
+        	margin-left: 5px;
+        	display: block;
+        	position: running(footer);
+        	height: 25px:
+        	margin-bottom: 2cm;
+        	background-color: #FF5722;
+        	width:98%;
+       		color: white;
+        	text-align: center;
+        	border: 1px solid white;
+        }
+        body {
+        	font-family: sans-serif;
+        	font-weight: normal;
+        }
+        .pdf {
+        	margin: auto;
+        	width: 100%;
+        }
+        .orangeBar {
+        	background-color:#FF5722;
+        	height: 20px;
+        	width: 100%;
+        }
+        .headerInfo {
+        	margin-left: 5px;
+        	display: block;
+        	position: running(headerInfo);
+        	background-color:#F3F3F3;
+        	width: 98%;
+        	height: 220px;
+        	border: 1px solid white;
+        }
+        .companyInfoContainer {
+            float: left;
+            gap: 10px;
+        }
+        .logoWrapper {
+        	float:left;
+        	width: 150px;
+        	height: 150px;
+        }
+        .logo {
+        	width: 60px;
+        	height: 60px;
+        	margin: 40px;
+        }
+        .companyInfo {
+        	color: #333F4F;
+        	float:right;
+        	width: 200px;
+        	height: 80px;
+        	margin-top: 40px;
+        }
+        .companyItem {
+            height: 20px;
+            width: 200px;
+        }
+        .oppItem {
+        	margin-top:5px;
+        }
+        .invoiceInfo {
+        	margin-right:20px;
+	        margin-top: 25px;
+        	float:right;
+        	
+        	width: 128px;
+        	height: 144px;
+        }
+        .invoiceNumber {
+        	line-height: 20px;
+        	font-family: 'Arial Unicode MS';
+        	font-size: 18pt;
+       		color: #7F7F7F;	
+        	padding-left: 7px;
+        	margin-bottom: 5px;
+        }
+        .invoiceNumber h4 {
+        	height: 100%;
+        }
+        .invoiceItem {	
+        	text-align: center;	
+        	color: #1F3864;
+            padding-bottom:5px;
+            margin-bottom: 20px;
+        	border-bottom: 1px solid #BFBFBF;
+        }
+        
+        .billToContainer {
+        	margin-left: 30px;
+        	margin-bottom: 15px;
+        	width: 93%;
+        }
+        .billTo{
+        	height: 25px;
+        	color: #1F3864;
+	        font-weight: bold;
+        	font-size: 12pt;
+        	border-bottom: 1px solid #BFBFBF;
+        	margin-bottom: 5px;
+        }
+        .billItem {
+        	font-size: 13pt;
+        	font-weight: normal;
+        	width: 100%;
+        	padding: 0;
+        	height: 25px;
+        }
+        .mainTableContainer {
+        	margin-left: 30px;
+        	width: 93%;
+        }
+        table {
+        	-fs-table-paginate: paginate;
+        	width: 100%;
+        	font-weight: normal;
+        	border-collapse: collapse;
+        }
+        td {
+        	padding-left: 5px;
+        	padding-right: 5px;
+        	height: 25px;
+        }
+        thead {
+        	display: table-header-group;
+        	background-color:#FF5722;
+        	color: white;
+        	height: 30px;
+        	line-height: 30px;
+        	font-size: 11pt;
+        	vertical-align: center;
+        }
+        tbody>tr>td {
+        	border-right: 2px solid #999999;
+        }
+        tbody>tr:first-child>td {
+        	border-top: 2px solid #999999;
+        }
+        
+        tbody>tr>td:first-child {
+        	border-left: 2px solid #999999;
+        }
+        tfoot {
+        	border-top: 2px solid #999999;
+        }
+        tfoot>tr>td {
+        	border-top: 2px solid #999999;
+        }
+        .balance-label {
+        	font-family: sans-serif;
+        	font-weight: bold;
+        	text-align: right;
+        	height:40px;
+        }
+        .balance-value {
+        	height:40px;
+        	border-bottom: 2px solid #999999;
+        	background-color: #F4CCCC;
+        	font-family: sans-serif;
+        	font-weight: bold;
+        	font-size: 16pt;
+        }
+        .even {
+        	background-color: #F3F3F3;
+        }
+        .odd {
+        	background-color: white;
+        }
+    </style>
+        </head>
+    <body>
+        <div class="pdf">
+        <div class="headerInfo">
+            <div class="orangeBar"></div>  
+            <div class="companyInfoContainer">
+                <div class="logoWrapper">
+                    <img src="https://successcraft-b0-dev-ed--c.develop.vf.force.com/resource/1686564407000/org_logo" class="logo"/>
+                </div>
+                <div class="companyInfo">
+                        <div class="companyName companyItem">
+                        	<apex:outputField value="{!org.Name}"/>
+                        </div>
+                        
+                        <div class="companyItem">
+							<apex:outputText value="{!addressString}"/>                        
+                        </div>
+                        <div class="oppItem companyItem">
+                        	<apex:outputField value="{!opp.Owner.Name}"/>
+                        </div>
+                    
+                </div>
+            </div>
+            <div class="invoiceInfo">
+                <div class="invoiceNumber">
+                    <h4>INVOICE</h4>
+                </div>
+                <div class="invoiceItem">
+                    <apex:outputText >{!todayDate}</apex:outputText>
+                </div>
+                <div class="invoiceItem">
+                	<apex:outputField value="{!opp.Invoice_Number__c}"/>
+                </div>
+            </div>
+        </div>
+        
+            
+        <div class="footer">
+            <apex:outputField value="{!org.Name}"/>
+        </div>
+        <div class="billToContainer">
+            <div class="billTo">
+                BILL TO
+            </div>
+            <div class="billToInfo">                
+                <div class="billItem">
+                    <apex:outputText >
+                        {!oppContact.Name}
+                    </apex:outputText>
+                </div>
+                <div class="billItem">
+                    <apex:outputText >
+                        {!opp.Name}
+                    </apex:outputText>
+                </div>
+                <div class="billItem">
+                    <apex:outputText >
+                        {!oppContact.Phone}
+                    </apex:outputText>
+                </div>
+                <div class="billItem">
+                    <apex:outputText >
+                        {!oppContact.Email}
+                    </apex:outputText>
+                </div>
+				
+            </div>
+        </div>
+            <div class="mainTableContainer">
+                <table class="tableClass" border="0" cellspacing="0" cellpadding="0">
+                    <colgroup>
+                        <col span="1" style="width: 45%;"/>
+                        <col span="1" style="width: 15%;"/>
+                        <col span="1" style="width: 20%;"/>
+                        <col span="1" style="width: 20%;"/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                       <th><center>PRODUCT NAME</center></th>               
+                       <th><center>QTY</center></th>
+                       <th><center>UNIT PRICE</center></th>
+                       <th><center>TOTAL PRICE</center></th>
+                    </tr>
+                        </thead>
+                    <tbody>
+                            
+                        <apex:variable var="i" value="{!1}"/>
+                    <apex:repeat value="{!oppProds}" var="prod">
+                        <tr class = "{!IF(MOD(i,2)==0, 'even','odd')}">
+                            <td>{!prod.Product2.Name}</td>
+                            <td><center>{!prod.Quantity}</center></td>
+                            <td style="text-align: right;">{!prod.ListPrice}</td>    
+                            <td style="text-align: right;">{!prod.TotalPrice}</td>
+                        <apex:variable var="i" value="{!i+1}"/>
+                        </tr>
+                    </apex:repeat>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td class="balance-label">Balance Due</td>    
+                        <td class="balance-value"><center>{!balance_due}</center></td>
+                    </tr>
+                	</tfoot>
+                </table>
+                
+            </div>
+        </div>
+    	
+    </body>
+    </html>
+</apex:page>

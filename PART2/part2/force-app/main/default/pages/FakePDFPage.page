@@ -1,0 +1,3 @@
+<apex:page action="{!generatepdf}" standardController="Opportunity" extensions="PDFController" renderAs="PDF">
+    
+</apex:page>

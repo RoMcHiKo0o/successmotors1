@@ -1,0 +1,10 @@
+<apex:component >
+    <style>
+        .orangebar {
+        	color:orange;
+        	height: 100px;
+        	width: 90%;
+        }
+    </style>
+    <div class="orangebar"></div>
+</apex:component>

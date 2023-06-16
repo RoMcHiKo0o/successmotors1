@@ -1,0 +1,34 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-modal-header label={header}></lightning-modal-header>
+    <lightning-modal-body>
+        <template if:false={isLoaded}>
+            <div role="status" class="slds-spinner
+            slds-spinner_medium
+            slds-spinner_brand
+            slds-spinner_inline
+            slds-align_absolute-center
+            slds-m-top_large">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+              
+          </template>
+          <template if:true={isLoaded}>
+        <template if:true={hasOli}>
+            <lightning-datatable
+                key-field="Id"
+                data={oli}
+                columns={columns}
+                hide-checkbox-column="true">
+              </lightning-datatable>
+        </template>
+        <template if:false={hasOli}>
+            <div class="slds-m-around_small slds-align_absolute-center">
+                No opportunity products 
+            </div>
+            
+        </template>
+    </template>
+    </lightning-modal-body>
+</template>
