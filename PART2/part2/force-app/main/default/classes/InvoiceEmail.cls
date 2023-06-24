@@ -53,37 +53,49 @@ global class InvoiceEmail implements Messaging.InboundEmailHandler {
         return ple[i+1].getLabel();
     }
     
+
     @AuraEnabled(cacheable=true)
-    static public EmailTemplate get_email_template(String templateId) {
-        return [select Id, Subject, Body, HtmlValue from EmailTemplate where Id=:templateId limit 1];
+    public static Map<String,Object> getAllData(String oppId){
+
+        OpportunityContactRole cont = [Select Contact.Name, Contact.Email from OpportunityContactRole where OpportunityId=:oppId limit 1];
+
+        EmailTemplate template = [select Subject, HtmlValue from EmailTemplate where DeveloperName=:'Invoice_Email_Template'];
+        List<Messaging.RenderEmailTemplateBodyResult> email = Messaging.renderEmailTemplate(cont.ContactId, oppId, new List<String>{template.Subject, template.HtmlValue});
+        Map<String,Object> response = new Map<String, Object>();
+        String body = email[1].getMergedBody().replace(']]>', '');
+        response.put('subject', email[0].getMergedBody());
+        response.put('body', body);
+        response.put('name', cont.Contact.Name);
+        response.put('email', cont.Contact.Email);
+        return response;
     }
-    
+
+
     @AuraEnabled(cacheable=true)
-    static public OpportunityContactRole getOppContact(String oppId) {
-        return [Select Contact.Name, Contact.Email from OpportunityContactRole where OpportunityId=:oppId limit 1];
-    }
-    @AuraEnabled(cacheable=true)
-    public static Id get_Invoice_id(String invoice){
+    public static Id get_Invoice_id(String oppId){
         try {
+            String invoice = [select Invoice_Number__c from Opportunity where Id=:oppId limit 1].Invoice_Number__c;
             return [select id from ContentDocument where Title =: invoice limit 1].Id;
         } catch (Exception e) {
             System.debug(e.getMessage());
             throw new AuraHandledException(e.getMessage());
         }
     }
+
+
     @AuraEnabled(cacheable=true)
-    public static Map<String,Object> sendEmail(Id oppId, Id contactId){
+    public static Map<String,Object> sendEmail(String oppId, String subject, String body){
         try {
-            String templateId = '00XDo000000tizZMAQ';
             Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
-            EmailTemplate emailTemplate = InvoiceEmail.get_email_template(templateId);
-            
+            EmailTemplate emailTemplate = [select Subject, HtmlValue from EmailTemplate where DeveloperName=:'Invoice_Email_Template'];
+            Id contactId = [Select ContactId from OpportunityContactRole where OpportunityId=:oppId limit 1].ContactId;
             String EmailServiceName = 'Email Invoice Handle';
             Id EmailServiceId = [SELECT Id, FunctionName FROM EmailServicesFunction where FunctionName =: EmailServiceName limit 1].Id;
             EmailServicesAddress  esa = [SELECT Id, LocalPart, EmailDomainName FROM EmailServicesAddress WHERE FunctionId =:EmailServiceId];
             message.setReplyTo(esa.LocalPart + '@' + esa.EmailDomainName);
-            message.setTemplateID(emailTemplate.Id); 
-            message.setTargetObjectId(contactid);
+            message.setSubject(subject);
+            message.setHtmlBody(body);
+            message.setTargetObjectId(contactId);
             message.setWhatId(oppId);
             String inv_number = [select Invoice_Number__c from Opportunity where Id =:oppId limit 1].Invoice_Number__c;
             
@@ -109,5 +121,15 @@ global class InvoiceEmail implements Messaging.InboundEmailHandler {
             throw new AuraHandledException(e.getMessage());
         }
     }
+
+    // @AuraEnabled(cacheable=true)
+    // static public EmailTemplate get_email_template(String templateId) {
+    //     return [select Id, Subject, Body, HtmlValue from EmailTemplate where Id=:templateId limit 1];
+    // }
+    
+    // @AuraEnabled(cacheable=true)
+    // static public OpportunityContactRole getOppContact(String oppId) {
+    //     return [Select Contact.Name, Contact.Email from OpportunityContactRole where OpportunityId=:oppId limit 1];
+    // }
 
 }
