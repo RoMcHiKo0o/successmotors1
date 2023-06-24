@@ -6,7 +6,8 @@
                     <span class="slds-form-element__label">Recipient Name</span>
                     <div class="slds-form-element__control">
                       <div class="slds-form-element__static">
-                        <p>{contact.name}</p>
+                        <!-- <p>{contact.name}</p> -->
+                        <p>{name}</p>
                       </div>
                     </div>
                 </div>
@@ -14,7 +15,8 @@
                     <span class="slds-form-element__label">Recipient Name</span>
                     <div class="slds-form-element__control">
                       <div class="slds-form-element__static">
-                        <lightning-formatted-email class="slds-m-around-large" value={contact.email}></lightning-formatted-email>
+                        <!-- <lightning-formatted-email class="slds-m-around-large" value={contact.email}></lightning-formatted-email> -->
+                        <lightning-formatted-email class="slds-m-around-large" value={email}></lightning-formatted-email>
                       </div>
                     </div>
                 </div>
@@ -26,13 +28,16 @@
                 <div class="slds-form-element">
                     <label class="slds-form-element__label" for="form-element-01">Subject</label>
                     <div class="slds-form-element__control">
+                        <!-- <div class="slds-form-element__static">{subject}</div> -->
                         <div class="slds-form-element__static">{subject}</div>
                     </div>
                 </div>
                 <div class="slds-form-element">
                     <label class="slds-form-element__label" for="form-element-02">Body</label>
                     <div class="slds-form-element__control form-element-02">
-                    <lightning-input-rich-text value={HtmlValue} onchange={handleChange} formats="[]"></lightning-input-rich-text>
+                    <!-- <lightning-input-rich-text value={HtmlValue} onchange={handleChange} formats="[]"></lightning-input-rich-text> -->
+                    <!-- <lightning-input-rich-text value={body} onchange={handleChange} formats="[]"></lightning-input-rich-text> -->
+                    <lightning-input-rich-text value={body} onchange={handleChange} formats="[]"></lightning-input-rich-text>
                     </div>
                 </div>
 

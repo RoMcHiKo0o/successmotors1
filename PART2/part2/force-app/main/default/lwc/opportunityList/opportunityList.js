@@ -1,4 +1,4 @@
-import { LightningElement, api ,track,wire} from 'lwc';
+import { LightningElement, api, wire} from 'lwc';
 import getAllAccounts from '@salesforce/apex/OpportunityStats.getAllAccounts';
 import NAME_FIELD from '@salesforce/schema/Opportunity.Name';
 import CREATED_FIELD from '@salesforce/schema/Opportunity.CreatedDate';
@@ -165,19 +165,19 @@ export default class OpportunityList extends LightningElement {
     }
 
     handleAccountChange(event) {
-        this.search = event.target.value;
+        this.search = event.detail;
         this.page = 0;
         this.noPrev = true;
         console.log(this.search);
     }
 
     handleAmountChange(event) {
-        this.amount = event.target.value || 0;
+        this.amount = event.detail;
         console.log(this.amount);
         this.filterAccounts();
     }
     handleSelectChange(event) {
-        this.sign = event.target.value;
+        this.sign = event.detail;
         console.log(this.sign);
         this.filterAccounts();
     }

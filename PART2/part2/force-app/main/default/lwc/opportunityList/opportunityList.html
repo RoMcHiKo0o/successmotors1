@@ -4,34 +4,14 @@
     <lightning-accordion
     allow-multiple-sections-open
     >
+    
     <template if:false={isAccPage}>
-  <div class="slds-grid slds-grid_vertical-align-end slds-wrap">
-      <lightning-input
-          class="slds-size_1-of-4 slds-m-around_small"
-          onchange={handleAccountChange}
-          name="enter-search"
-          label="Search Account"
-          type="search">
-      </lightning-input>
-      <div
-        class="slds-size_1-of-10 slds-m-around_small">
-        <div></div>
-        <select class="slds-select" id="select-01" onchange={handleSelectChange}>
-          <option value="more">more than</option>
-          <option value="equals">equals to</option>
-          <option value="less">less than</option>
-        </select>
-      </div>
-      <lightning-input
-          class="slds-size_1-of-4 slds-m-vertical_small"
-          onchange={handleAmountChange}
-          name="enter-amount-search"
-          label="Amount"
-        
-          type="number"
-      ></lightning-input>
-      
-  </div>
+      <c-filter-search-component
+        onaccountchange={handleAccountChange}
+        onselectchange={handleSelectChange}
+        onamountchange={handleAmountChange}
+        >
+      </c-filter-search-component>
 </template>
     <template if:false={isLoaded}>
 
@@ -86,6 +66,5 @@
     <button class="slds-button slds-button_neutral" disabled={noNext} onclick={setNextPage}>Next</button>
   </div>  
 </template>
-    
       </lightning-card>
 </template>
