@@ -1,0 +1,40 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_medium">
+            <div slot="title" class="slds-text-align_center slds-border_bottom slds-m-bottom_medium">
+                <span class="slds-text-heading_medium">Title</span>
+            </div>    
+            
+            <h2 style="font-weight: bold;">Schedule batch</h2>
+            <p>Description text</p>
+            <div class="slds-form-element">
+                <div class="slds-form-element__label" for="text-input-id-48">
+                    <abbr class="slds-required" title="required">* </abbr>CRON String
+                    <lightning-helptext content="CRON String" style="top:-2px"></lightning-helptext>
+                </div>
+                <div class="slds-form-element__control">
+                    <input onchange={handleChange} type="text" id="text-input-id-48" required="" aria-describedby="error-message-id-49" class="slds-input" value={cronString} disabled={isExecuting}/>
+                </div>
+                <div class="slds-form-element__help" id="error-message-id-53">
+                    <a href="https://www.salesforce.com/products/platform/products/lightning-scheduler/">Read more about scheduling</a>
+                </div>
+            </div>
+
+            
+            <div class="slds-border_top slds-m-top_small slds-p-top_small slds-has-bottom-magnet" style="display: flex; justify-content:right;">
+                <lightning-button label="Run once" variant="brand" onclick={handleRun} class="slds-m-right_x-small"></lightning-button>
+        
+                <template if:false={isExecuting}>
+                    <lightning-button label="Schedule batch" variant="brand" onclick={handleSchedule}></lightning-button>
+                </template>
+                <template if:true={isExecuting}>
+                    <lightning-button label="Abort batch" variant="destructive"  onclick={handleAbort}></lightning-button>
+                </template>
+            </div>
+            
+        </div>
+        
+        
+    </lightning-card>
+</template>
