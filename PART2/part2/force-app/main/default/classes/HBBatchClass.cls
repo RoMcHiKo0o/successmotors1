@@ -22,13 +22,13 @@ public with sharing class HBBatchClass implements Database.Batchable<SObject> {
         System.debug(emailList);
 
 
-        try {
-            List<Messaging.SendEmailResult> results = Messaging.sendEmail(emailList, false);
-            System.debug(results);
+        // try {
+        //     List<Messaging.SendEmailResult> results = Messaging.sendEmail(emailList, false);
+        //     System.debug(results);
             
-        } catch (Exception e) {
-            System.debug(e.getMessage());
-        }
+        // } catch (Exception e) {
+        //     System.debug(e.getMessage());
+        // }
 
     }
   

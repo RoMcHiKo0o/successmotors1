@@ -23,7 +23,7 @@
 
             
             <div class="slds-border_top slds-m-top_small slds-p-top_small slds-has-bottom-magnet" style="display: flex; justify-content:right;">
-                <lightning-button label="Run once" variant="brand" onclick={handleRun} class="slds-m-right_x-small"></lightning-button>
+                <lightning-button label="Run once" variant="brand" onclick={handleRun} disabled={notFinished} class="slds-m-right_x-small"></lightning-button>
         
                 <template if:false={isExecuting}>
                     <lightning-button label="Schedule batch" variant="brand" onclick={handleSchedule}></lightning-button>

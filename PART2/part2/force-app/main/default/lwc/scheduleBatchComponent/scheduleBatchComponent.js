@@ -10,6 +10,7 @@ import { subscribe, unsubscribe } from 'lightning/empApi';
 export default class ScheduleBatchComponent extends LightningElement {
 
     isExecuting = false;
+    notFinished = false;
     cronString = '0 0 0 * * ?';
     scheduleJob;
     @api batchClassName;
@@ -23,6 +24,7 @@ export default class ScheduleBatchComponent extends LightningElement {
     subscription;
 
     messageCallback(response, batchJob) {
+        this.notFinished=false;
         if (response.data.payload.JobId__c == batchJob) {
             var title = '';
             var variant = '';
@@ -64,21 +66,23 @@ export default class ScheduleBatchComponent extends LightningElement {
 
         }).then((result)=> {
             console.log(result);
-            if (result != '') {
+            if (result.jobId != '') {
                 this.isExecuting = true;
+                this.scheduleJob = result.jobId;
+                console.log(this.scheduleJob);
             }
             else {
                 const event = new ShowToastEvent({
                     title: 'something goes wrong',
-                    message: '',
+                    message: result.error,
                     variant: 'error'
                 });
                 this.dispatchEvent(event);
             }
-            this.scheduleJob = result;
-            console.log(this.scheduleJob);
+            
         })
         .catch((e)=> {
+            console.log('error in schedule');
             console.log(e);
         });  
 
@@ -91,18 +95,35 @@ export default class ScheduleBatchComponent extends LightningElement {
             console.log(result);
         })
         .catch((e)=> {
+            console.log('error in abort');
             console.log(e);
         })
         this.isExecuting = false;
     }
 
     handleRun(event) {
+        this.notFinished = true;
         console.log('hi');
         exBatch({'batchClassName': this.batchClassName})
         .then((result)=> {
             console.log(result);
-            subscribe(this.channelName, -1, (response)=>this.messageCallback(response, result)).then(result=>this.subscription=result);
+            if (result.jobId != '') {
+                this.notFinished = true;
+                subscribe(this.channelName, -1, (response)=>this.messageCallback(response, result.jobId)).then(result=>this.subscription=result);
+            }
+            else {
+                const event = new ShowToastEvent({
+                    title: 'something goes wrong',
+                    message: result.error,
+                    variant: 'error'
+                });
+                this.dispatchEvent(event);
+            }
+            
         })
-        .catch((e)=>{console.log(e);});
+        .catch((e)=>{
+            console.log('error in execute batch');
+            console.log(e);
+        });
     }
 }
