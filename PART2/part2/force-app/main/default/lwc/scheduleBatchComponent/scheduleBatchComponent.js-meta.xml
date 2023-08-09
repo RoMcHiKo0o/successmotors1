@@ -5,4 +5,12 @@
     <targets>
         <target>lightning__AppPage</target>
     </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <property name="batchClassName" label="Batch Class Name" type="String" required="true"/>
+            <property name="scheduleClassName" label="Schedule Class Name" type="String" required="true"/>
+        </targetConfig>
+    </targetConfigs>
+
 </LightningComponentBundle>

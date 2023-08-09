@@ -3,6 +3,7 @@ import { LightningElement, api } from 'lwc';
 import exBatch from '@salesforce/apex/batchScheduleClass.executeBatch'
 import scheduleBatch from '@salesforce/apex/batchScheduleClass.scheduleBatch'
 import abortBatch from '@salesforce/apex/batchScheduleClass.abortBatch'
+import checkScheduledJob from '@salesforce/apex/batchScheduleClass.checkScheduledJob'
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { subscribe, unsubscribe } from 'lightning/empApi';
 
@@ -12,6 +13,7 @@ export default class ScheduleBatchComponent extends LightningElement {
     isExecuting = false;
     notFinished = false;
     cronString = '0 0 0 * * ?';
+    jobName = 'Scheduling Batch from LWC';
     scheduleJob;
     @api batchClassName;
     @api scheduleClassName;
@@ -22,7 +24,17 @@ export default class ScheduleBatchComponent extends LightningElement {
 
     channelName = '/event/batch_finish_event__e';
     subscription;
-
+    connectedCallback() {
+        checkScheduledJob({'jobName': this.jobName})
+        .then((result) => {
+            this.isExecuting = (result.jobId != '');
+            this.scheduleJob = result.jobId;
+            console.log(result.error);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
     messageCallback(response, batchJob) {
         this.notFinished=false;
         if (response.data.payload.JobId__c == batchJob) {
@@ -60,7 +72,7 @@ export default class ScheduleBatchComponent extends LightningElement {
     handleSchedule(event) {
         console.log(this.cronString);
         scheduleBatch({
-            'jobName': 'Scheduling Batch from LWC',
+            'jobName': this.jobName,
             'cronString': this.cronString,
             'scheduleClassName': this.scheduleClassName,
 

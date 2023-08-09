@@ -7,32 +7,32 @@ public with sharing class batchScheduleClass {
 
             Id jobId = Database.executeBatch((Database.Batchable<SObject>)classType.newINstance(), 200);
             result.put('jobId', jobId);
-            result.put('error', '');
-            return result;    
+            result.put('error', ''); 
         }
         catch(Exception e) {
             System.debug(e);
             result.put('jobId', '');
             result.put('error', e.getMessage());
-            return result;
         }
-        
+        return result;        
     }
 
-    // @AuraEnabled(cacheable=true)
-    // public static string checkJob(String job){
-    //     System.debug(job);
-    //     if (job != null) {
-    //         AsyncApexJob AAjob = [select Status from AsyncApexJob where Id=:job limit 1];
-    //         System.debug(AAjob);
-    //         if (AAjob != null) {
-    //             return AAjob.Status;
-    //         }
-         
-    //     }
-    //     return 'Failed';
-        
-    // }
+    @AuraEnabled
+    public static Map<String,Object> checkScheduledJob(String jobName){
+        Map<String,Object> result = new Map<String,Object>{};
+        try {
+            String CronJobDetailId = [select Id from CronJobDetail where Name =: jobName].Id;
+            String jobId = [select Id from CronTrigger where CronJobDetailId =: CronJobDetailId].Id;
+            result.put('jobId', jobId);
+            result.put('error', '');
+            
+        } catch (Exception e) {
+            result.put('jobId', '');
+            result.put('error', e.getMessage());
+
+        }
+        return result;
+    }
 
     @AuraEnabled(cacheable=true)
     public static Map<String,String> scheduleBatch(String jobName, String cronString, String scheduleClassName) {
