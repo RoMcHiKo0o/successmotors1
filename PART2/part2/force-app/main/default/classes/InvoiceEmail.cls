@@ -9,7 +9,6 @@ global class InvoiceEmail implements Messaging.InboundEmailHandler {
             String invoice = matcher.group(0);
             try {
             	Opportunity opp = [Select Id, StageName from Opportunity where Invoice_Number__c =: invoice Limit 1];    
-                System.debug(opp);
                 
                 str = email.plainTextBody.split('\\n')[0];
                 Boolean approved = str.contains('Approved');
@@ -17,23 +16,18 @@ global class InvoiceEmail implements Messaging.InboundEmailHandler {
                 if (approved) {
                     String newStage = InvoiceEmail.get_next(opp.StageName);
                     opp.StageName = newStage;
-                    System.debug('Stage is updated to '+ newStage);
                     update opp;
                 }
                 else if (rejected) {
                     opp.StageName = 'Closed Lost';
-                    System.debug('Closed Lost');
                     update opp;
                 }
             }
             catch(Exception e) {
-                System.debug(e.getMessage());
-                System.debug('No Opp with such Invoice Number'); 
                 throw new DmlException(e.getMessage());
             }
         }
         else {
-            System.debug('Invoice Number is not found');
         }
         return result;
     }
@@ -77,7 +71,6 @@ global class InvoiceEmail implements Messaging.InboundEmailHandler {
             String invoice = [select Invoice_Number__c from Opportunity where Id=:oppId limit 1].Invoice_Number__c;
             return [select id from ContentDocument where Title =: invoice limit 1].Id;
         } catch (Exception e) {
-            System.debug(e.getMessage());
             throw new AuraHandledException(e.getMessage());
         }
     }
@@ -111,7 +104,6 @@ global class InvoiceEmail implements Messaging.InboundEmailHandler {
             
             
             Messaging.SendEmailResult[] result = Messaging.sendEmail(new List<Messaging.Email>{message});
-            System.debug(result);
             Map<String,Object> res = new Map<String, Object>();
             res.put('success', result[0].isSuccess());
             res.put('error', result[0].getErrors());

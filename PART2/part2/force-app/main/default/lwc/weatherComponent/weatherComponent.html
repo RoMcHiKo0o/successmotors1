@@ -1,0 +1,53 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_small" style="height: 300px;">
+            <div if:true={hasPermission}>
+                <div class="slds-align_absolute-center slds-text-heading_large">
+                    <p>Weather Widget</p>
+                </div>
+                <div onkeyup={handleKeyUp}>
+                    <lightning-input
+                        name="enter-search"
+                        label="Search city"
+                        type="search"
+                        value={cityName}
+                    ></lightning-input>
+                </div>
+                <div class="slds-m-top_small">
+                    <div if:false={loading}>
+                        <div if:true={status} class="slds-grid">
+                            <div class="slds-col slds-size_1-of-3">
+                                <img src={iconUrl}>
+                            </div>
+    
+                            <div class="slds-col slds-size_2-of-3 slds-grid_vertical">
+                                <div class="slds-col">
+                                    {maininfo}
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-accordion label="More info" allow-multiple-sections-open=true>
+                                        <lightning-accordion-section label="More info">
+                                            {moreinfo}
+                                        </lightning-accordion-section>
+                                    </lightning-accordion>
+                                </div>
+                            </div>
+    
+                        </div>
+                        <div if:false={status}>
+                            {errorinfo}
+                        </div>
+                    </div>
+                    <lightning-spinner if:true={loading} alternative-text="Loading" size="x-small" variant="brand"></lightning-spinner>
+                </div>
+            </div>
+            <div if:false={hasPermission}>
+                <div class="slds-align_absolute-center slds-text-heading_large">
+                    <p>You don't have permission</p>
+                </div>                
+            </div>
+        </div>
+            
+        
+    </lightning-card>
+</template>

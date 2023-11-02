@@ -1,7 +1,6 @@
 public with sharing class OpportunityStats {
     @AuraEnabled(cacheable=true)
     public static List<Map<String,Object>> getAllAccounts(Integer page, String search, String accountId){
-        System.debug(search);
         Integer offsetNumber = 10*page;
         String query = 'Select Id, Name, (select Id, Name, CreatedDate, CloseDate, Amount from opportunities where isClosed=true) from Account where ';
         if (accountId != '') {

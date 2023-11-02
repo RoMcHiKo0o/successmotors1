@@ -1,0 +1,44 @@
+<template>
+    <lightning-modal-header label="Black List"></lightning-modal-header>
+    <lightning-modal-body>
+    <lightning-dual-listbox lwc:if={options.length} name="languages"
+                            source-label="Available"
+                            selected-label="Selected"
+                            options={options}
+                            disable-reordering="true"
+                            value={initialValues}
+                            onchange={handleChange}>
+    </lightning-dual-listbox>
+
+    <!-- <div style="height: 6rem" lwc:else>
+        <div class="slds-spinner_container">
+            <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div> -->
+
+    <div style="height: 15rem;" class="slds-align_absolute-center" lwc:else>
+        <div class="slds-is-relative">
+            <lightning-spinner alternative-text="Loading..." variant="brand"></lightning-spinner>
+        </div>
+    </div>
+    <div class="slds-p-top_x-small" lwc:if={isChanged}>
+        <lightning-layout 
+            horizontal-align="right"
+            pull-to-boundary="small"
+        >
+        <lightning-layout-item>
+            <lightning-button variant="brand-outline" label="Cancel" onclick={handleCancel} class="slds-m-left_x-small"></lightning-button>
+            </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-button variant="brand" label="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+        </lightning-layout-item>
+        </lightning-layout>
+        
+    </div>
+</lightning-modal-body>
+
+</template>

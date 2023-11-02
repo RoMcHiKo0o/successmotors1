@@ -41,7 +41,6 @@ public class batchScheduleClassTest {
     public static void abortBatchTest() {
         Test.startTest();
         Map<String, String> result = batchScheduleClass.scheduleBatch('test Job', '0 0 0 1 1 ? 2042', 'HBScheduleClass');
-        system.debug(result);
         System.assertEquals(1, [SELECT Id FROM CronTrigger WHERE Id = :result.get('jobId')].size());
         batchScheduleClass.abortBatch(result.get('jobId'));
         System.assertEquals(0, [SELECT Id FROM CronTrigger WHERE Id = :result.get('jobId')].size());

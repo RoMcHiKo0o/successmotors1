@@ -56,7 +56,6 @@ public with sharing class PDFControllerTest {
         Pagereference result = pdfC.generatepdf();
 
         System.assertNotEquals(null, result);
-        System.debug(result);
         String inv_number = [select Invoice_Number__c from Opportunity limit 1].Invoice_Number__c;
         List<ContentVersion> cv = [select Id, Title, ContentDocumentId from ContentVersion where Title=:inv_number];
         List<ContentDocument> cd = [select Id, Title from ContentDocument where Title=:inv_number];

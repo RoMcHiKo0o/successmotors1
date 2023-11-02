@@ -11,24 +11,19 @@ public with sharing class HBBatchClass implements Database.Batchable<SObject> {
         EmailTemplate HBTemplate = [select Subject, Body from EmailTemplate where DeveloperName=:emailTemplateName limit 1];
 
         List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
-        System.debug(scope);
-        System.debug(HBTemplate);
         for (Sobject cont: scope) {
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
             mail.setTemplateId(HBTemplate.Id);
             mail.setTargetObjectId(cont.Id);
             emailList.add(mail);
         }
-        System.debug(emailList);
 
 
-        // try {
-        //     List<Messaging.SendEmailResult> results = Messaging.sendEmail(emailList, false);
-        //     System.debug(results);
+        try {
+            List<Messaging.SendEmailResult> results = Messaging.sendEmail(emailList, false);
             
-        // } catch (Exception e) {
-        //     System.debug(e.getMessage());
-        // }
+        } catch (Exception e) {
+        }
 
     }
   

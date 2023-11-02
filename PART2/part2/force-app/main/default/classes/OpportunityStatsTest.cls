@@ -62,7 +62,6 @@ public with sharing class OpportunityStatsTest {
             System.assertNotEquals(null, acc.get('Id'));
             System.assertNotEquals(null, acc.get('Name'));
             List<Map<String,Object>> oppList = (List<Map<String,Object>>)acc.get('Opportunities');
-            System.debug(oppList);
             System.assertEquals(1, oppList.size());
             for (Map<String,Object> opp : oppList) {
                 System.assertNotEquals(null, opp.get('Id'));
@@ -93,7 +92,6 @@ public with sharing class OpportunityStatsTest {
             System.assertNotEquals(null, acc.get('Id'));
             System.assertNotEquals(null, acc.get('Name'));
             List<Map<String,Object>> oppList = (List<Map<String,Object>>)acc.get('Opportunities');
-            System.debug(oppList);
             System.assertEquals(1, oppList.size());
             for (Map<String,Object> opp : oppList) {
                 System.assertNotEquals(null, opp.get('Id'));

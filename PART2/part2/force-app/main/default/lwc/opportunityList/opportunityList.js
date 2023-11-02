@@ -35,11 +35,9 @@ export default class OpportunityList extends LightningElement {
         if (currentPageReference) {
             this.isAccPage = currentPageReference.attributes.objectApiName === 'Account' &&
             currentPageReference.type === 'standard__recordPage';
-            console.log(currentPageReference);
         }
         this.accountId = this.isAccPage ? currentPageReference.attributes.recordId : '';    
         
-        console.log('page detected: ' + this.accountId);
     }
 
 
@@ -68,17 +66,13 @@ export default class OpportunityList extends LightningElement {
 
     @wire(getAllAccounts, {page: '$page', search: '$search', accountId: '$accountId'})
     getAccs({data, error}) {
-        console.log('getting accounts: ' + this.accountId);
         if(data) {
             this.isLoaded = false;
-            console.log(this.hasAccs);
             this.noNext = data.length<10;
             this.accs = this.changeData(data);
             this.filterAccounts();
-            console.log(this.filteredAccs);
         }
         else if (error) {
-            console.log(error);
         }
     }
 
@@ -98,30 +92,23 @@ export default class OpportunityList extends LightningElement {
             return res;
         }
         catch(e) {
-            console.log('ошибка');
-            console.log(e);
         }
     }
 
     setNextPage() {
-        console.log('next');
         this.page++; 
         this.noPrev = false;
-        console.log(this.filteredAccs);
     }
     
     setPrevPage() {
-        console.log('prev');
         this.page--;
         this.noNext = false;
         this.noPrev = this.page==0;
-        console.log(this.filteredAccs);
         
     }
 
     async showOppProducts() {
         const result = await myModal.open({oppId: this.selectedRow.Id, header: this.selectedRow.Name});
-        console.log(result);
         
     }
     isTrue(a) {
@@ -151,16 +138,12 @@ export default class OpportunityList extends LightningElement {
             }    
             this.isLoaded = true;
         } catch (error) {
-            console.log(error);
         }
         
-        console.log(this.filteredAccs);
     }
 
     handleRowAction(event) {
-        console.log(event.detail.row);
         this.selectedRow = event.detail.row;
-        console.log('selected id: ' + this.selectedRow);
         this.showOppProducts();
     }
 
@@ -168,17 +151,14 @@ export default class OpportunityList extends LightningElement {
         this.search = event.detail;
         this.page = 0;
         this.noPrev = true;
-        console.log(this.search);
     }
 
     handleAmountChange(event) {
         this.amount = event.detail;
-        console.log(this.amount);
         this.filterAccounts();
     }
     handleSelectChange(event) {
         this.sign = event.detail;
-        console.log(this.sign);
         this.filterAccounts();
     }
 }

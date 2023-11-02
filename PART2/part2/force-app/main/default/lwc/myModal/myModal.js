@@ -24,10 +24,7 @@ export default class myModal extends LightningModal {
     @wire(getOppProds, {oppId: '$oppId'})
     getOLI({data, error}) {
         this.isLoaded = false;
-        console.log('modal oppid');
-        console.log(this.oppId);
         if (data) {
-            console.log(data);
             this.hasOli = data.length>0;
             this.oli= data.map(row => { 
                 return {...row, Product2Name: row.Product2.Name } 
@@ -35,7 +32,6 @@ export default class myModal extends LightningModal {
             this.isLoaded = true;
         }
         else if (error) {
-            console.log(error);
         }
     }
 }

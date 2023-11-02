@@ -29,7 +29,6 @@ export default class EmailQuickAction extends NavigationMixin(LightningElement) 
             this.subject = data.subject;
         }
         if (error) {
-            console.log(error);
         }
     }
 
@@ -39,10 +38,8 @@ export default class EmailQuickAction extends NavigationMixin(LightningElement) 
 
 
     showHandle() {
-        console.log('1');
         get_Invoice_id({oppId: this.recordId}).then(
             (response)=> {
-                console.log(response);
                 this[NavigationMixin.Navigate]({
                     type: 'standard__namedPage',
                     attributes: {
@@ -53,7 +50,6 @@ export default class EmailQuickAction extends NavigationMixin(LightningElement) 
                     }
                 })
             }).catch(error=>{
-                console.log(error.body.message);
                 const event = new ShowToastEvent({
                     title: 'Preview error',
                     message: 'No invoices found',
@@ -90,8 +86,6 @@ export default class EmailQuickAction extends NavigationMixin(LightningElement) 
                 
             }
         }).catch(error => {
-            console.log(error.body.message);
-            console.log('ошибка при отправке');
                 const event = new ShowToastEvent({
                     title: 'Error',
                     message: 'No invoices found for attachment',

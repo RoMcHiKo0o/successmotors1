@@ -31,9 +31,7 @@ public class PDFController {
             (address.getCity()==null ? '' : address.getCity());
         todayDate = Date.today().day() + ' ' + Date.today().month() + ' ' + Date.today().year();
         todayDate = DateTime.now().format('dd/MM/yyyy');
-        system.debug([Select ContactId from OpportunityContactRole]);
       	Id contId = [Select ContactId from OpportunityContactRole where OpportunityId=:oppId and IsPrimary=true].ContactId;
-        System.debug([select Name,Phone,Email from Contact where Id=:contId]);
         oppContact = [select Name,Phone,Email from Contact where Id=:contId];
         oppProds = [select
                     Id,
@@ -68,7 +66,6 @@ public class PDFController {
         
         List<ContentVersion> cvs = [SELECT Id,contentdocumentid FROM ContentVersion WHERE Title = :opp.Invoice_Number__c];
         if (cvs.size()==0) {
-            System.debug('size = 0');
             ContentVersion cv1 = new ContentVersion(
                 Title=opp.Invoice_Number__c, 
                 VersionData = pdfBlob,
@@ -82,7 +79,6 @@ public class PDFController {
             insert cl;
         }
         else {
-            System.debug('size > 0');
             ContentVersion cv1 = new ContentVersion(
                 Title=opp.Invoice_Number__c, 
                 VersionData = pdfBlob,

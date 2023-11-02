@@ -1,0 +1,36 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-card>
+    <lightning-layout horizontal-align="end" class="slds-p-right_small slds-p-bottom_x-small slds-p-top_none slds-m-top_none">
+      <lightning-layout-item>
+        <lightning-button-menu alternative-text="Share" label="Share">
+          <template for:each={users} for:item="user">
+            <lightning-menu-item
+                id={user.Id}
+                label={user.Name}
+                value={user.Id}
+                key={user.Id}
+                onclick={handleShareClick}
+            >
+            </lightning-menu-item>
+        </template>
+        </lightning-button-menu>
+      </lightning-layout-item>
+      <lightning-layout-item>
+        <lightning-button variant="destructive" label="Delete" title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small"></lightning-button>
+      </lightning-layout-item>
+    </lightning-layout>
+          
+    <div style="overflow-x: scroll; height: 200px">      
+      <lightning-datatable
+      key-field="Id"
+      data={opps}
+      columns={columns}
+      column-widths-mode="auto"
+      onrowselection={handleRowSelection}
+      >
+      </lightning-datatable>
+    </div>
+</lightning-card>
+
+</template>

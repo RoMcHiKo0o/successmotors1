@@ -10,7 +10,6 @@ public with sharing class batchScheduleClass {
             result.put('error', ''); 
         }
         catch(Exception e) {
-            System.debug(e);
             result.put('jobId', '');
             result.put('error', e.getMessage());
         }
@@ -31,6 +30,7 @@ public with sharing class batchScheduleClass {
             result.put('error', e.getMessage());
 
         }
+
         return result;
     }
 
@@ -47,7 +47,6 @@ public with sharing class batchScheduleClass {
         }
 
         catch(Exception e) {
-            System.debug(e);
             result.put('jobId', '');
             result.put('error', e.getMessage());
             return result;
@@ -60,7 +59,6 @@ public with sharing class batchScheduleClass {
         try {
             System.AbortJob(job);    
         } catch (Exception e) {
-            System.debug(e);
         }
     }
 

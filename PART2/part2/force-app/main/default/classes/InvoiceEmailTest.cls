@@ -29,8 +29,6 @@ public with sharing class InvoiceEmailTest {
     }
     
     @isTest static void testGetNext() {
-
-		System.debug([select DeveloperName from EmailTemplate]);
         Opportunity opp = new Opportunity(Name='Test', StageName='Prospecting', CloseDate=Date.today());
         insert opp;
         String nextStage = InvoiceEmail.get_next(opp.StageName);
@@ -70,7 +68,6 @@ public with sharing class InvoiceEmailTest {
         InvoiceEmail IM = new InvoiceEmail();
         Test.startTest();	
 		Opportunity testOpportunity = [SELECT Id, StageName, Invoice_Number__c FROM Opportunity limit 1];
-		system.debug(testOpportunity);
         Messaging.InboundEmail email = new Messaging.InboundEmail();
         email.subject = 'test subject: ' + testOpportunity.Invoice_Number__c;
         email.plainTextBody = 'Approved';
@@ -80,7 +77,6 @@ public with sharing class InvoiceEmailTest {
 
         Messaging.InboundEmailResult result = new Messaging.InboundEmailResult();
         result = IM.handleInboundEmail(email, envelope);
-        System.debug(result);
         System.assertEquals(true, result.success);
         System.assertEquals(null, result.message);
         System.assertEquals('Qualification', [SELECT Id, StageName, Invoice_Number__c FROM Opportunity limit 1].StageName);
@@ -100,7 +96,6 @@ public with sharing class InvoiceEmailTest {
 
         Messaging.InboundEmailResult result = new Messaging.InboundEmailResult();
         result = IM.handleInboundEmail(email, envelope);
-        System.debug(result);
         System.assertEquals(true, result.success);
         System.assertEquals(null, result.message);
         System.assertEquals('Closed Lost', [SELECT Id, StageName, Invoice_Number__c FROM Opportunity limit 1].StageName);
