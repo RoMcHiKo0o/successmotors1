@@ -66,10 +66,7 @@ public with sharing class BlackListClass {
         return result;
         
     }
-    // @AuraEnabled
-    // public static Map<String, Object> insertIntoBlackList(List<String> Ids){
-    //     delete [select Id from Black_list__c where Record_id__c in :Ids];        
-    // }
+    
 
     @AuraEnabled
     public static Map<String,Object> getAllAccountsAndContacts() {

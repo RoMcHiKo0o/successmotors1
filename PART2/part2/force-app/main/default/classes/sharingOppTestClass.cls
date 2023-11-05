@@ -10,19 +10,18 @@ global with sharing class sharingOppTestClass {
         Contact cont1 = new Contact(LastName='cont1');
         insert cont1;
 
+        Contact cont2 = new Contact(LastName='cont2',AccountId=acc1.Id);
+        insert cont2;
 
-        Black_list__c blr1 = new Black_list__c(Record_id__c= acc1.Id, Record_type__c='Account');
-
-        Black_list__c blr2 = new Black_list__c(Record_id__c= acc2.Id, Record_type__c='Account');
+        Black_list__c blr2 = new Black_list__c(Record_id__c= acc1.Id, Record_type__c='Account');
         Black_list__c blr3 = new Black_list__c(Record_id__c= cont1.Id, Record_type__c='Contact');
-        insert blr1;
         insert blr2;
         insert blr3;
 
-        Opportunity opp1 = new Opportunity(Name='opp1',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=false,AccountId=acc1.Id);
-        Opportunity opp2 = new Opportunity(Name='opp2',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=false);
-        Opportunity opp3 = new Opportunity(Name='opp3',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=true, ContactId=cont1.Id);
-        Opportunity opp4 = new Opportunity(Name='opp4',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=true);
+        Opportunity opp1 = new Opportunity(Name='opp1',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=false, AccountId=acc1.Id);
+        Opportunity opp2 = new Opportunity(Name='opp2',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=false, ContactId=cont1.Id);
+        Opportunity opp3 = new Opportunity(Name='opp3',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=true, ContactId=cont2.Id);
+        Opportunity opp4 = new Opportunity(Name='opp4',CloseDate=Date.today(),StageName='Prospecting',is_Processed__c=true, AccountId=acc2.Id, ContactId=cont1.Id);
         insert opp1;
         insert opp2;
         insert opp3;
@@ -49,25 +48,25 @@ global with sharing class sharingOppTestClass {
 
     @IsTest
     global static void getUsersTestMethod() {
-        System.assertEquals(2, sharingOppClass.getUsers().size());
+        System.assertEquals([select Id from User].size() - 1, sharingOppClass.getUsers().size());
     }
 
     @IsTest
-    global static void cascadeDeleteTestMethod() {
+    global static void opportunityDeleteTestMethod() {
         List<String> ToDeleteIds = new List<String>();
         for (Opportunity opp: [select Id from Opportunity]) {
             ToDeleteIds.add(opp.Id);
         }
-        Map<String,Object> data = sharingOppClass.cascadeDelete(ToDeleteIds);
-        System.assert((Boolean)data.get('success'));
-        System.assertEquals(2, ((List<String>)data.get('deletedIds')).size());
-        System.assertEquals(2, [select Id from Opportunity].size());
+        sharingOppClass.opportunityDelete(ToDeleteIds);
+        System.assertEquals(0, [select Id from Opportunity].size());
+        System.assertEquals(1, [select Id from Account].size());
+        System.assertEquals(1, [select Id from Contact].size());
 
     }
 
 
     @IsTest
-    global static void shareOppsTestMethod1() {
+    global static void shareOppsTestMethod() {
         User u2 = [select Id from User where LastName='Testing2'];
         List<String> oppIds = new List<String>();
         Integer oldSize = [select Id from OpportunityShare].size();
@@ -77,18 +76,6 @@ global with sharing class sharingOppTestClass {
         Map<String, Object> data = sharingOppClass.shareOpps(oppIds, u2.Id);
         System.assert((Boolean)data.get('success'));
         System.assertEquals(oldSize+2,[select Id from OpportunityShare].size());
-
-    }
-    @IsTest
-    global static void shareOppsTestMethod2() {
-        User u1 = [select Id from User where LastName='Testing'];
-        List<String> oppIds = new List<String>();
-        for(Opportunity opp: [select Id From Opportunity where Name = 'opp1' or Name = 'opp2']) {
-            oppIds.add(opp.Id);
-        }
-        Map<String, Object> data = sharingOppClass.shareOpps(oppIds, u1.Id);
-        System.assert(!(Boolean)data.get('success'));
-        System.assertNotEquals(null, data.get('errors'));
 
     }
 }

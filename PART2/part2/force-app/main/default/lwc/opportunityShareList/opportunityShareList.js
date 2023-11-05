@@ -3,7 +3,7 @@ import getOpps from '@salesforce/apex/sharingOppClass.getOpps';
 import getUsers from '@salesforce/apex/sharingOppClass.getUsers';
 
 import shareOpps from '@salesforce/apex/sharingOppClass.shareOpps';
-import cascadeDelete from '@salesforce/apex/sharingOppClass.cascadeDelete';
+import opportunityDelete from '@salesforce/apex/sharingOppClass.opportunityDelete';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class OpportunityShareList extends LightningElement {
@@ -37,6 +37,15 @@ export default class OpportunityShareList extends LightningElement {
 
     }
 
+    refresh() {
+        getOpps()
+        .then((data)=>{
+            this.opps=data;
+        })
+        .catch((e)=>{
+        })
+    }
+
     handleRowSelection(event) {
         switch (event.detail.config.action) {
             case 'selectAllRows':
@@ -59,27 +68,15 @@ export default class OpportunityShareList extends LightningElement {
     }
 
     handleDelete() {
-        cascadeDelete({"Ids": this.selectedRows})
+        opportunityDelete({'Ids': this.selectedRows})
         .then(data => {
-            let eventData;
-            if (data.success) {
-                let deletedRows = data.deletedIds;
-                this.opps = this.opps.filter(el => deletedRows.indexOf(el)==-1);
-                eventData = {
-                    title: 'Success',
-                    message: `Opportunities were successfully deleted.
-                    Deleted: ${deletedRows.length}, not deleted: ${this.selectedRows.length-deletedRows.length}`,
-                    variant: 'success'
-                }
-            }
-            else {
-                eventData = {
-                    title: 'Error',
-                    message: data.errors,
-                    variant: 'error'
-                }
-            }
-            this.dispatchEvent(new ShowToastEvent(eventData));
+        this.refresh();    
+        const event = {
+            title: 'Success',
+            message: 'Opportunities were successfully deleted',
+            variant: 'success'
+        };
+        this.dispatchEvent(new ShowToastEvent(event));
             
         })
         .catch((err) => {

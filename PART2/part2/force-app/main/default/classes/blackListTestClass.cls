@@ -74,11 +74,12 @@ global with sharing class blackListTestClass {
         insert acc3;
         List<String> ids = new List<String>();
         ids.add(acc3.Id);
+        Integer blackListLength = [select Id from Black_list__c].size();
         ids.add([select Record_id__c from Black_list__c limit 1].Record_id__c);
         Map<String, Object> data = BlackListClass.insertIntoBlackList(ids);
         System.assertNotEquals(null, data);
         System.assertNotEquals(true, (Boolean)data.get('success'));
         System.assertNotEquals(null, data.get('errors'));
-        System.assertEquals(3, [select Id From Black_list__c].size());
+        System.assertEquals(blackListLength+1, [select Id From Black_list__c].size());
     }
 }

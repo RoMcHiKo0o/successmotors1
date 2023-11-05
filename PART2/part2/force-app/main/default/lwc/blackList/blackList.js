@@ -5,7 +5,7 @@ import deleteFromBlackList from '@salesforce/apex/BlackListClass.deleteFromBlack
 import changeBlackListComponent from 'c/changeBlackListComponent';
 
 
-import { subscribe, MessageContext } from 'lightning/messageService';
+import { subscribe, MessageContext, unsubscribe } from 'lightning/messageService';
 import blackListChannel from '@salesforce/messageChannel/blackList__c';
 
 
